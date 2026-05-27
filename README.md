@@ -66,8 +66,8 @@ pip install pygame
 ## Installation
 
 ```bash
-git clone https://github.com/[your-repo]/quoridor.git
-cd quoridor
+git clone https://github.com/EsraaRefaee/QuoridorGame.git
+cd QuoridorGame
 pip install pygame
 ```
 
