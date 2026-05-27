@@ -15,8 +15,6 @@ We store walls as a set of blocked edges.
 """
 
 from pathfinding import both_players_have_path
-
-
 class Board:
     def __init__(self):
         """Set up a fresh game."""
