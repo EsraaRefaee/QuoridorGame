@@ -199,6 +199,12 @@ def _handle_key(key, board, screen, game_mode, ai_difficulty):
     elif key == pygame.K_ESCAPE:
         # Go back to menu (restart)
         main()
+    elif key == pygame.K_z:
+        board.undo()
+        board.undo()
+    elif key == pygame.K_y:
+        board.redo()
+        board.redo()
 
 
 def _handle_button(action, board, screen, game_mode, ai_difficulty):

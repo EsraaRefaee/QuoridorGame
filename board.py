@@ -57,6 +57,12 @@ class Board:
         # Wall orientation for placement: 'H' or 'V'
         self.wall_orientation = 'H'
 
+        # Undo history stack
+        self.history = []
+
+        # Redo future stack
+        self.future = []
+
     # -------------------------------------------------------------------------
     # Helper: get the current player's data dict
     # -------------------------------------------------------------------------
@@ -149,6 +155,10 @@ class Board:
         if (row, col) not in valid_moves:
             return False
 
+        # Save state before making the move and clear redo stack
+        self.history.append(self._snapshot())
+        self.future.clear()
+
         player = self.current_player()
         player['row'] = row
         player['col'] = col
@@ -233,6 +243,10 @@ class Board:
         if not self.can_place_wall(row, col, direction):
             return False
 
+        # Save state before placing the wall and clear redo stack
+        self.history.append(self._snapshot())
+        self.future.clear()
+
         # Add the blocked edges
         new_edges = self._wall_edges(row, col, direction)
         for edge in new_edges:
@@ -261,6 +275,49 @@ class Board:
             e1 = (min((row, col), (row, col + 1)), max((row, col), (row, col + 1)))
             e2 = (min((row + 1, col), (row + 1, col + 1)), max((row + 1, col), (row + 1, col + 1)))
         return [e1, e2]
+
+    # -------------------------------------------------------------------------
+    # Undo / Redo
+    # -------------------------------------------------------------------------
+    def _snapshot(self):
+        """Return a deep copy of the current game state."""
+        import copy
+        return {
+            'player1':       copy.copy(self.player1),
+            'player2':       copy.copy(self.player2),
+            'blocked_edges': set(self.blocked_edges),
+            'placed_walls':  list(self.placed_walls),
+            'current_turn':  self.current_turn,
+            'winner':        self.winner,
+        }
+
+    def undo(self):
+        """Undo the last move. Returns True if successful."""
+        if not self.history:
+            return False
+        self.future.append(self._snapshot())  # save current state for redo
+        state = self.history.pop()
+        self.player1       = state['player1']
+        self.player2       = state['player2']
+        self.blocked_edges = state['blocked_edges']
+        self.placed_walls  = state['placed_walls']
+        self.current_turn  = state['current_turn']
+        self.winner        = state['winner']
+        return True
+
+    def redo(self):
+        """Redo the last undone move. Returns True if successful."""
+        if not self.future:
+            return False
+        self.history.append(self._snapshot())  # save current state for undo
+        state = self.future.pop()
+        self.player1       = state['player1']
+        self.player2       = state['player2']
+        self.blocked_edges = state['blocked_edges']
+        self.placed_walls  = state['placed_walls']
+        self.current_turn  = state['current_turn']
+        self.winner        = state['winner']
+        return True
 
     # -------------------------------------------------------------------------
     # Turn management

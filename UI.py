@@ -79,7 +79,7 @@ class UI:
             {'label': 'Wall Mode',    'action': 'mode_wall',  'rect': pygame.Rect(bx, 325, 220, 40)},
             {'label': 'Horizontal',      'action': 'orient_H',   'rect': pygame.Rect(bx, 370, 105, 35)},
             {'label': 'Vertical',        'action': 'orient_V',   'rect': pygame.Rect(bx + 115, 370, 105, 35)},
-            {'label': 'Restart Game', 'action': 'reset',      'rect': pygame.Rect(bx, 565, 220, 45)},
+            {'label': 'Restart Game', 'action': 'reset',      'rect': pygame.Rect(bx, 580, 220, 45)},
         ]
 
     def draw_all(self, board, game_mode, mouse_pos):
@@ -201,7 +201,7 @@ class UI:
         # Keyboard Help
         help_y = 440
         pygame.draw.line(self.screen, BUTTON_COLOR, (bx, help_y-10), (bx+220, help_y-10))
-        for line in ["W: Toggle Mode", "H/V: Orientation", "R: Restart", "Esc: Main Menu"]:
+        for line in ["W: Toggle Mode", "H/V: Orientation", "R: Restart", "Esc: Main Menu", "Z: Undo", "Y: Redo"]:
             h_txt = self.font_small.render(line, True, TEXT_DIM)
             self.screen.blit(h_txt, (bx, help_y))
             help_y += 22

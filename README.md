@@ -6,7 +6,7 @@ A fully playable implementation of the classic two-player abstract strategy game
 
 ## Table of Contents
 
-- [Overview](#overview)
+- [Game Description](#game-description)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [How to Run](#how-to-run)
@@ -17,11 +17,12 @@ A fully playable implementation of the classic two-player abstract strategy game
 - [AI Implementation](#ai-implementation)
   - [Easy AI](#easy-ai)
   - [Hard AI](#hard-ai)
+- [Undo / Redo](#undo--redo)
 - [Architecture Notes](#architecture-notes)
 
 ---
 
-## Overview
+## Game Description
 
 Quoridor is a two-player board game played on a 9×9 grid. Each player controls one pawn. On every turn, a player either **moves their pawn** one square orthogonally or **places a wall** to impede the opponent's path. The first player to reach the opposite side of the board wins.
 
@@ -30,6 +31,7 @@ This implementation includes:
 - BFS-based wall legality check (no wall may completely block a player's path)
 - Two AI opponents: Easy and Hard
 - A graphical interface with move highlights, wall previews, and a live sidebar
+- Undo/Redo support for reviewing and correcting moves
 
 ---
 
@@ -101,6 +103,8 @@ You always play as **Player 1 (Red)**. The AI always plays as **Player 2 (Blue)*
 | **V** | Switch to Vertical wall orientation |
 | **M** | Switch back to Move Mode |
 | **R** | Restart the current game |
+| **Z** | Undo last move |
+| **Y** | Redo last undone move |
 | **Esc** | Return to the main menu |
 
 You can also use the **sidebar buttons** on the right to switch modes and orientations.
@@ -124,7 +128,8 @@ You can also use the **sidebar buttons** on the right to switch modes and orient
 ```
 quoridor/
 ├── main.py          # Entry point: game loop, menu, input handling, AI trigger
-├── board.py         # Game state: positions, walls, move/wall validation, win detection
+├── board.py         # Game state: positions, walls, move/wall validation, win detection, 
+                       undo/redo
 ├── ai.py            # AI logic: Easy (BFS + blocking) and Hard (greedy heuristic)
 ├── pathfinding.py   # BFS pathfinding: wall legality checks
 └── ui.py            # Pygame rendering: board, pawns, walls, sidebar, overlays
@@ -139,11 +144,13 @@ Contains the `Board` class, which is the single source of truth for all game sta
 - `blocked_edges` — a Python `set` of edge tuples `((r1,c1),(r2,c2))` marking walls
 - `placed_walls` — list of `(row, col, direction)` tuples for rendering
 - `current_turn`, `mode`, `wall_orientation`, `winner`
+- `history` / `future` — undo and redo stacks of game state snapshots
 
 Key methods:
 - `get_valid_pawn_moves()` — returns all legal destination cells for the current player, handling normal moves, jumps, and diagonal jumps
 - `can_place_wall(row, col, direction)` — validates bounds, overlap, crossing, wall count, and path connectivity
 - `get_neighbors(row, col)` — returns adjacent cells not blocked by walls (used by BFS)
+- `undo()` / `redo()` — step backward and forward through move history
 
 ### `pathfinding.py`
 Implements BFS in `bfs_has_path()` to check whether a player can reach their goal row. Called by `both_players_have_path()` which is used inside `can_place_wall()` to enforce the connectivity rule.
@@ -178,6 +185,17 @@ The AI simulates every valid pawn move and every wall placement within 3 cells o
 The action with the highest score improvement is chosen. If no action improves the score, it falls back to moving toward the goal by row distance.
 
 The wall search is limited to nearby positions using `_get_walls_near_players(max_distance=3)`, which dramatically reduces computation time while keeping the AI effective.
+
+---
+
+## Undo / Redo
+
+The game supports undo and redo for both Human vs Human and Human vs AI modes.
+
+- **Z** undoes the last move. In Human vs AI, it undoes both the AI's response and your move together, returning the board to before your last action.
+- **Y** redoes the last undone move. Making any new move clears the redo history.
+
+Undo/Redo is implemented in `board.py` using two stacks (`history` and `future`). Before every move or wall placement, a full snapshot of the game state is saved to `history`. Undoing moves that snapshot to `future`, and redoing pops it back.
 
 ---
 
