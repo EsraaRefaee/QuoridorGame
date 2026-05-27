@@ -168,6 +168,16 @@ class UI:
         # Header
         title = self.font_title.render("QUORIDOR", True, ACCENT_COLOR)
         self.screen.blit(title, (bx, 30))
+
+        # Game Mode Label
+        mode_labels = {
+            ('hvh', None):    'Human vs Human',
+            ('hvc', 'easy'):  'Human vs AI (Easy)',
+            ('hvc', 'hard'):  'Human vs AI (Hard)',
+        }
+        mode_str = mode_labels.get(game_mode, 'Quoridor')
+        mode_txt = self.font_small.render(mode_str, True, TEXT_DIM)
+        self.screen.blit(mode_txt, (bx + 110 - mode_txt.get_width()//2, 75))
         
         # Turn Indicator Box
         turn_rect = pygame.Rect(bx, 100, 220, 60)
