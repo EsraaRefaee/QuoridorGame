@@ -164,7 +164,7 @@ def run_game(screen, game_mode, ai_difficulty):
         # ---------------------------------------------------------------
         # Draw
         # ---------------------------------------------------------------
-        ui.draw_all(board, game_mode, mouse_pos)
+        ui.draw_all(board, (game_mode, ai_difficulty), mouse_pos)
         pygame.display.flip()
         clock.tick(60)
 
