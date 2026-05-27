@@ -42,10 +42,10 @@ This implementation includes:
 ![Human vs Human](screenshots/hvh_gameplay.png)
 
 ### Human vs AI (Easy)
-![Human vs AI Easy](screenshots/hvc_easy.png)
+![Human vs AI Easy](screenshots/hvai_easy.png)
 
 ### Human vs AI (Hard)
-![Human vs AI Hard](screenshots/hvc_hard.png)
+![Human vs AI Hard](screenshots/hvai_hard.png)
 
 ## Demo Video
 [Watch the demo on Google Drive](https://drive.google.com/file/d/1RN1-jKp1kxiJ3ExyV6EgCwFw-zdFC-wI/view?usp=drive_link)
