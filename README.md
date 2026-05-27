@@ -33,6 +33,20 @@ This implementation includes:
 
 ---
 
+## Screenshots
+
+### Main Menu
+![Main Menu](screenshots/menu.png)
+
+### Human vs Human
+![Human vs Human](screenshots/hvh_gameplay.png)
+
+### Human vs AI (Easy)
+![Human vs AI Easy](screenshots/hvc_easy.png)
+
+### Human vs AI (Hard)
+![Human vs AI Hard](screenshots/hvc_hard.png)
+
 ## Requirements
 
 - Python 3.10 or higher
