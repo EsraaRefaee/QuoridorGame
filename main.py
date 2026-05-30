@@ -17,7 +17,7 @@ import sys
 import time
 
 from board import Board
-from ui import UI, pixel_to_cell, pixel_to_wall_slot, WINDOW_W, WINDOW_H
+from UI import UI, pixel_to_cell, pixel_to_wall_slot, WINDOW_W, WINDOW_H
 from ai import get_easy_move, get_hard_move
 
 
