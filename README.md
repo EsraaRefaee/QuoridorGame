@@ -50,7 +50,7 @@ This implementation includes:
 ![Human vs AI Hard](screenshots/hvai_hard.png)
 
 ## Demo Video
-[Watch the demo on Google Drive](https://drive.google.com/file/d/1RN1-jKp1kxiJ3ExyV6EgCwFw-zdFC-wI/view?usp=drive_link)
+[Watch the demo on Google Drive](https://drive.google.com/file/d/1ZRCpXeYgaMP7xPjUTs2_Z_NUGtyR6SZc/view?usp=sharing)
 
 ## Requirements
 
